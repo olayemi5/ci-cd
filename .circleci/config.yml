@@ -13,16 +13,22 @@ commands:
       - run: echo << parameters.to >>
 
 jobs:
-  printpipelineid_job:
+  testing_website:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - print_pipeline_id:
-          to: $CIRCLE_WORKFLOW_ID
-
+      - run:
+          name: Testing application
+          command: make test
+          shell: return 1
+      
+      - run:
+          name: Failed process
+          command: echo "Testing application process failed"
+          when: on_fail
 
 workflows:
-  printing_pipeline_id:
+  error_handling:
     jobs:
-      - printpipelineid_job
+      - testing_website
       
