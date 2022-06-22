@@ -15,14 +15,14 @@ commands:
 jobs:
   printpipelineid_job:
     docker:
-      - image: circleci/node:9.6.1
+      - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id:
           to: $CIRCLE_WORKFLOW_ID
 
 
 workflows:
-  greeting-workflow:
+  printing_pipeline_id:
     jobs:
       - printpipelineid_job
       
