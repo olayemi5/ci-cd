@@ -2,44 +2,27 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands:
+  print_pipeline_id:
+    description: "priniting circle ci pipeline ID"
+    parameters:
+      to:
+        type: string
+        default: "Pipeline ID"
+    steps:
+      - run: echo << parameters.to >>
+
 jobs:
-  print_hello:
+  printpipelineid_job:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node:9.6.1
     steps:
-      - checkout
-      - run:
-          name: "Say Hello"
-          command: "echo Hello!"
-  
-  print_world:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Say World"
-          command: "echo World!"
-  
-  print_name:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "Say Name"
-          command: echo $MY_ENV_NAME
+      - print_pipeline_id:
+          to: $CIRCLE_WORKFLOW_ID
 
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   greeting-workflow:
     jobs:
-      - print_hello
-      - print_world:
-          requires:
-            - print_hello
-      - print_name
+      - printpipelineid_job
+      
